@@ -410,7 +410,11 @@ void setupDirectories() {
     }
 }
 
-// returns 2 streams: for prompt input files and for solution input files
+/** 
+ * @brief Returns 2 streams: for prompt input files and for solution input files.
+ * 
+ * @note The caller is responsible for closing the file stream using its close() method.
+ */
 std::pair<std::ofstream, std::ofstream> setupTest(int testNumber) {
     std::string promptInPath = format("%s/%d.in", dirs.at("promptInputDirectory").c_str(), testNumber);
     std::string solutionInPath = format("%s/%d.in", dirs.at("solutionInputDirectory").c_str(), testNumber);
@@ -427,4 +431,5 @@ std::pair<std::ofstream, std::ofstream> setupTest(int testNumber) {
     }
     return {std::move(promptInFile), std::move(solutionInFile)};
 }
+
 #endif
