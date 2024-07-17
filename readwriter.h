@@ -56,7 +56,7 @@ public:
     int numberOfEdges;
 
 private:
-    void printForPromptTo(std::ofstream &outputStream) const {
+    void printForPromptTo(std::ostream &outputStream) const {
         outputStream << "{";
         for (int i = 0; i < numberOfNodes; ++i) {
             outputStream << "{";
@@ -74,7 +74,7 @@ private:
         outputStream <<  "}\n";
     }
 
-    void printForSolutionTo(std::ofstream &outputStream) const {
+    void printForSolutionTo(std::ostream &outputStream) const {
         auto edges = getEdges();
 
         outputStream << numberOfNodes << " " << edges.size() << "\n";
@@ -135,7 +135,7 @@ public:
         return edges;
     }
     
-    void printTo(std::ofstream &outputStream, PrintFormat format) const {
+    void printTo(std::ostream &outputStream, PrintFormat format) const {
         switch (format) {
             case Prompt:
                 printForPromptTo(outputStream);
