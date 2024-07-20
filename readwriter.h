@@ -253,7 +253,7 @@ Graph Graph::construct_dense_graph(int nodes) {
         g[a].push_back(b);
         g[b].push_back(a);
     }
-    return Graph(g);
+    return Graph(g).relabelNodes();
 }
 
 // Ścieżka // Zbiór ścieżek
