@@ -40,7 +40,7 @@ Graph Graph::construct_undirected_clique(int nodes) {
         }
     }
 
-    return Graph(g);
+    return Graph(g).relabelNodes();
 }
 
 Graph Graph::construct_path_graph(int nodes, int numberOfComponents) {
