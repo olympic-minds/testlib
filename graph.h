@@ -2,6 +2,8 @@
 #define GRAPH_H_
 
 #include "utils.h"
+#include <numeric>
+#include <functional>
 
 class Graph {
 public:
