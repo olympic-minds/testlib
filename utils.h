@@ -1,8 +1,11 @@
 #ifndef UTILS_H_
 #define UTILS_H_
 
-#include "bits/stdc++.h"
+// #include "bits/stdc++.h"
 #include <filesystem>
+#include <map>
+#include <vector>
+#include <iostream>
 
 enum PrintFormat { Prompt, Solution };
 
