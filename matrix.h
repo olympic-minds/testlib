@@ -72,6 +72,7 @@ public:
     }
 
     /// Returns the size of the matrix, first is number of rows, second is number of columns.
+    /// Matrices with zero rows or columns are not allowed by the constructor, therefore we don't check if matrix[0] exists.
     std::pair<uint64_t, uint64_t> getSize() const { 
         return {matrix.size(), matrix[0].size()};
     }
