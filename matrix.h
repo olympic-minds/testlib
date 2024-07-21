@@ -45,10 +45,14 @@ private:
         if (mat.size() == 0) {
             return false;
         }
+
         uint64_t rowLength = mat[0].size();
+        if (rowLength == 0) {
+            return false;
+        }
 
         for (row : mat) {
-            if(row.size() != rowLength){
+            if (row.size() != rowLength) {
                 return false;
             }
         }
@@ -59,8 +63,7 @@ private:
 public:
     Matrix(std::vector<std::vector<T>> mat) {
         assert(vectorIsValidMatrix(mat));
-        
-        size = {mat.size(), mat[0].size()};
+
         matrix = mat;
     }
 
@@ -70,11 +73,7 @@ public:
 
     /// Returns the size of the matrix, first is number of rows, second is number of columns.
     std::pair<uint64_t, uint64_t> getSize() const { 
-        if(matrix.size() > 0) {
-            return {matrix.size(), matrix[0].size()};
-        } else {
-            return {0, 0};
-        }
+        return {matrix.size(), matrix[0].size()};
     }
 
     bool operator==(const Matrix &other) const {
