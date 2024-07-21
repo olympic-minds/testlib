@@ -70,7 +70,11 @@ public:
 
     /// Returns the size of the matrix, first is number of rows, second is number of columns.
     std::pair<uint64_t, uint64_t> getSize() const { 
-        return {matrix.size(), matrix[0].size()};
+        if(matrix.size() > 0) {
+            return {matrix.size(), matrix[0].size()};
+        } else {
+            return {0, 0};
+        }
     }
 
     bool operator==(const Matrix &other) const {
