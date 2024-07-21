@@ -41,7 +41,7 @@ private:
     }
 
     /// Checks if the vector of vectors is a valid matrix.
-    static bool vectorIsValidMatrix(std::vector<std::vector<T>> &mat) {
+    static bool vectorIsValidMatrix(const std::vector<std::vector<T>> &mat) {
         if (mat.size() == 0) {
             return false;
         }
