@@ -41,13 +41,13 @@ private:
     }
 
     /// Checks if the vector of vectors is a valid matrix.
-    static bool vectorIsValidMatrix(std::vector<std::vector<T>> mat){
-        if(mat.size() == 0){
+    static bool vectorIsValidMatrix(std::vector<std::vector<T>> &mat) {
+        if (mat.size() == 0) {
             return false;
         }
         uint64_t rowLength = mat[0].size();
 
-        for(row : mat){
+        for (row : mat) {
             if(row.size() != rowLength){
                 return false;
             }
@@ -57,14 +57,14 @@ private:
     }
 
 public:
-    Matrix(std::vector<std::vector<T>> mat){
+    Matrix(std::vector<std::vector<T>> mat) {
+        assert(vectorIsValidMatrix(mat));
+        
         size = {mat.size(), mat[0].size()};
         matrix = mat;
-
-        assert(vectorIsValidMatrix(mat));
     }
 
-    bool isSquareMatrix(){
+    bool isSquareMatrix() const {
         return getSize().first == getSize().second;
     }
 
@@ -103,10 +103,10 @@ public:
 
     static Matrix readMatrix(std::istream &inputStream) {
         std::pair<uint64_t, uint64_t> size;
-        inputStream >> getSize().first >> getSize().second;
-        std::vector<std::vector<T>> matrix(getSize().first, std::vector<T>(getSize().second));
-        for (uint64_t i = 0; i < getSize().first; i++) {
-            for (uint64_t j = 0; j < getSize().second; j++) {
+        inputStream >> size.first >> size.second;
+        std::vector<std::vector<T>> matrix(size.first, std::vector<T>(size.second));
+        for (uint64_t i = 0; i < size.first; ++i) {
+            for (uint64_t j = 0; j < size.second; ++j) {
                 inputStream >> matrix[i][j];
             }
         }
@@ -115,23 +115,23 @@ public:
 
     static Matrix constructIdentityMatrix(uint64_t size) {
         std::vector<std::vector<T>> matrix(size, std::vector<T>(size, 0));
-        for (uint64_t i = 0; i < size; i++) {
+        for (uint64_t i = 0; i < size; ++i) {
             matrix[i][i] = 1;
         }
         return Matrix(matrix);
     }
 
     // Function to get the cofactor matrix (minor matrix)
-    Matrix getCofactor(uint64_t delRow, uint64_t delCol) {
+    Matrix getCofactor(uint64_t delRow, uint64_t delCol) const {
         uint64_t i = 0, j = 0;
-        std::vector<std::vector<T>> temp(getSize().first-1, std::vector<int>(getSize().second-1)); 
-        for (uint64_t row = 0; row < getSize().first; row++) {
-            for (uint64_t col = 0; col < getSize().second; col++) {
+        std::vector<std::vector<T>> temp(getSize().first-1, std::vector<T>(getSize().second-1)); 
+        for (uint64_t row = 0; row < getSize().first; ++row) {
+            for (uint64_t col = 0; col < getSize().second; ++col) {
                 if (row != delRow && col != delCol) {
                     temp[i][j++] = mat[row][col];
                     if (j == getSize().second - 1) {
                         j = 0;
-                        i++;
+                        ++i;
                     }
                 }
             }
@@ -139,15 +139,15 @@ public:
         return std::move(temp);
     }
 
-    int64_t getTrace() {
+    int64_t getTrace() const {
         int64_t result = 0;
-        for (uint64_t i = 0; i < getSize().first; i++) {
+        for (uint64_t i = 0; i < getSize().first; ++i) {
             result += matrix[i][i];
         }
         return result;
     }
 
-    int64_t getDeterminant() {
+    int64_t getDeterminant() const {
         assert(isSquare());
         
         int64_t det = 0;
@@ -157,7 +157,7 @@ public:
 
         int64_t sign = 1;
 
-        for (uint64_t f = 0; f < getSize().first; f++) {
+        for (uint64_t f = 0; f < getSize().first; ++f) {
             Matrix<T> temp = getCofactor(matrix, 0, f);
             det += sign * matrix[0][f] * getDeterminant(temp);
             sign = -sign;
