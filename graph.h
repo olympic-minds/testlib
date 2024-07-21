@@ -8,23 +8,21 @@
 class Graph {
 public:
     bool directed = false;
-    int numberOfNodes;
-    std::vector<std::vector<int>> graph;
-    int numberOfEdges;
+    std::vector<std::vector<uint64_t>> graph;
 
 private:
     void printForPromptTo(std::ostream &outputStream) const {
         outputStream << "{";
-        for (int i = 0; i < numberOfNodes; ++i) {
+        for (uint64_t i = 0; i < getNumberOfNodes() ; ++i) {
             outputStream << "{";
-            for (int j = 0; j < graph[i].size(); ++j) {
+            for (uint64_t j = 0; j < graph[i].size(); ++j) {
                 outputStream << graph[i][j];
                 if (j != graph[i].size() - 1) {
                     outputStream << ",";
                 }
             }
             outputStream << "}";
-            if (i != numberOfNodes - 1) {
+            if (i != getNumberOfNodes()  - 1) {
                 outputStream << ",";
             }
         }
@@ -34,26 +32,31 @@ private:
     void printForSolutionTo(std::ostream &outputStream) const {
         auto edges = getEdges();
 
-        outputStream << numberOfNodes << " " << edges.size() << "\n";
+        outputStream << getNumberOfNodes()  << " " << edges.size() << "\n";
         for (auto edge : edges) {
             outputStream << edge.first << " " << edge.second << "\n";
         }
     }
 
 public:
-    Graph(std::vector<std::vector<int>> g, bool directed = false)
+    Graph(std::vector<std::vector<uint64_t>> g, bool directed = false)
         : directed(directed),
-          numberOfNodes(g.size()),
-          graph(g),
-          numberOfEdges(std::accumulate(graph.begin(), graph.end(), 0,
-                                        [](const int x, const auto &a) { return x + a.size(); })) {}
+          graph(g) {}
+
+    uint64_t getNumberOfNodes() const { return graph.size() ; }
+
+    uint64_t getNumberOfEdges() const { 
+        return std::accumulate(graph.begin(), graph.end(), 0, [](const uint64_t x, const auto &a) { 
+            return x + a.size(); 
+        }); 
+    }
 
     bool operator==(const Graph &other) const {
-        if (numberOfNodes != other.numberOfNodes) {
+        if (getNumberOfNodes()  != other.getNumberOfNodes() ) {
             return false;
         }
 
-        for (int node = 0; node < numberOfNodes; ++node) {
+        for (uint64_t node = 0; node < getNumberOfNodes() ; ++node) {
             if (graph[node] != other.graph[node]) {
                 return false;
             }
@@ -61,12 +64,12 @@ public:
         return true;
     }
 
-    operator std::vector<std::vector<int>>() const { return graph; }
+    operator std::vector<std::vector<uint64_t>>() const { return graph; }
 
-    std::vector<std::pair<int, int>> getEdges() const {
-        std::vector<std::pair<int, int>> edges;
-        for (int v = 0; v < numberOfNodes; ++v)
-            for (int u : graph[v]) edges.emplace_back(v, u);
+    std::vector<std::pair<uint64_t, uint64_t>> getEdges() const {
+        std::vector<std::pair<uint64_t, uint64_t>> edges;
+        for (uint64_t v = 0; v < getNumberOfNodes() ; ++v)
+            for (uint64_t u : graph[v]) edges.emplace_back(v, u);
         return edges;
     }
 
@@ -83,49 +86,52 @@ public:
         }
     }
 
-    static Graph read_graph(std::istream &inputStream) {
-        int nodes, numberOfEdges;
+    static Graph readGraph(std::istream &inputStream) {
+        uint64_t nodes, numberOfEdges;
         inputStream >> nodes >> numberOfEdges;
-        std::vector<std::vector<int>> g(nodes);
-        for (int i = 0; i < numberOfEdges; i++) {
-            int a, b;
+        std::vector<std::vector<uint64_t>> g(nodes);
+        for (uint64_t i = 0; i < numberOfEdges; i++) {
+            uint64_t a, b;
             inputStream >> a >> b;
             g[a].push_back(b);
         }
         return Graph(g);
     }
 
-    static Graph construct_empty_graph(int nodes);
-    static Graph construct_undirected_clique(int nodes);
-    static Graph construct_path_graph(int nodes, int numberOfComponents = 1);
-    static Graph construct_shallow_forest_graph(int nodes, int numberOfTrees);
-    static Graph construct_shallow_tree_graph(int nodes);
-    static Graph construct_forest_graph(int nodes, int numberOfTrees);
-    static Graph construct_tree_graph(int nodes);
-    static Graph construct_simpler_jellyfish_graph(int nodes, int cycleSize, int maxTentacleLength,
-                                                   int numberOfTentacles);
-    static Graph construct_starfish_graph(int nodes, int maxRayLength, int numberOfRays);
-    static Graph construct_silkworm_graph(int nodes);
-    static Graph construct_tree_of_bounded_degree_graph(int nodes, int minDegree, int maxDegree);
-    static Graph construct_sparse_graph(int nodes);
-    static Graph construct_dense_graph(int nodes);
+    static Graph constructEmptyGraph(uint64_t nodes);
+    static Graph constructUndirectedClique(uint64_t nodes);
+    static Graph constructPathGraph(uint64_t nodes, uint64_t numberOfComponents = 1);
+    static Graph constructShallowForestGraph(uint64_t nodes, uint64_t numberOfTrees);
+    static Graph constructShallowTreeGraph(uint64_t nodes);
+    static Graph constructForestGraph(uint64_t nodes, uint64_t numberOfTrees);
+    static Graph constructTreeGraph(uint64_t nodes);
+    static Graph constructSimplerJellyfishGraph(uint64_t nodes, uint64_t cycleSize, uint64_t maxTentacleLength,
+                                                   uint64_t numberOfTentacles);
+    static Graph constructStarfishGraph(uint64_t nodes, uint64_t maxRayLength, uint64_t numberOfRays);
+    static Graph constructSilkwormGraph(uint64_t nodes);
+    static Graph constructTreeOfBoundedDegreeGraph(uint64_t nodes, uint64_t minDegree, uint64_t maxDegree);
+    static Graph constructSparseGraph(uint64_t nodes);
+    static Graph constructDenseGraph(uint64_t nodes);
 
-    bool is_clique() { return (directed ? numberOfEdges : 2 * numberOfEdges) == numberOfNodes * (numberOfNodes - 1); }
+    bool isClique() {
+        uint64_t numberOfEdges = getNumberOfEdges(); 
+        return (directed ? numberOfEdges : numberOfEdges * 2) == getNumberOfNodes()  * (getNumberOfNodes()  - 1); 
+    }
 
-    bool is_connected() { return undirected_connected_components_number() == 1; }
+    bool isConnected() { return undirectedConnectedComponentsNumber() == 1; }
 
-    int undirected_connected_components_number() {
-        int scc_number = 0;
-        bool visited[numberOfNodes];
+    uint64_t undirectedConnectedComponentsNumber() {
+        uint64_t scc_number = 0;
+        bool visited[getNumberOfNodes() ];
 
-        std::function<void(int)> dfs = [&](int v) -> void {
+        std::function<void(uint64_t)> dfs = [&](uint64_t v) -> void {
             visited[v] = true;
             for (auto u : graph[v]) {
                 dfs(u);
             }
         };
 
-        for (int v = 0; v < numberOfNodes; v++) {
+        for (uint64_t v = 0; v < getNumberOfNodes() ; v++) {
             if (!visited[v]) {
                 visited[v] = true;
                 scc_number++;
