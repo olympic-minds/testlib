@@ -50,7 +50,7 @@ template <typename T>
 concept ConvertibleToInt64_t = std::convertible_to<T, int64_t>;
 
 template<ConvertibleToInt64_t T>
-int64_t changeVectorToInt64_t(std::vector<T> v) {
+int64_t changeVectorToInt64_t(std::vector<T> &v) {
     int64_t result = 0;
     for (int64_t i = 0; i < v.size(); i++) {
         result += (i + 1) * v[i];
