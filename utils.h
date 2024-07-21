@@ -53,21 +53,20 @@ template<ConvertibleToLongLong T>
 long long changeVectorToLongLong(std::vector<T> v) {
     long long result = 0;
     for (long long i = 0; i < v.size(); i++) {
-        result += (i + 1LL) * v[i];
+        result += (i + 1) * v[i];
     }
     return result;
 }
 
-template<typename T>
-void printMatrix(std::vector<std::vector<T>> v) {
-    for (size_t i=0;i< v.size();i++) {
-        for (size_t j=0;j<v[i].size();j++) {
-            std::cout<< v[i][j] << " ";
-        }
-        std::cout << "\n";
-    }
-    std::cout << "\n\n";
-}
+// template<typename T>
+// void printMatrix(std::vector<std::vector<T>> v) {
+//     for (size_t i=0;i< v.size();i++) {
+//         for (size_t j=0;j<v[i].size();j++) {
+//             std::cout<< v[i][j] << " ";
+//         }
+//         std::cout << "\n";
+//     }
+// }
 
 template<ConvertibleToLongLong T>
 long long calculateMatrixTrace(std::vector<std::vector<T>> v) {
