@@ -51,7 +51,7 @@ private:
             return false;
         }
 
-        for (row : mat) {
+        for (auto row : mat) {
             if (row.size() != rowLength) {
                 return false;
             }
@@ -77,7 +77,7 @@ public:
     }
 
     bool operator==(const Matrix &other) const {
-        if (size != other.size) {
+        if (getSize() != other.getSize()) {
             return false;
         }
 
@@ -131,7 +131,7 @@ public:
         for (uint64_t row = 0; row < getSize().first; ++row) {
             for (uint64_t col = 0; col < getSize().second; ++col) {
                 if (row != delRow && col != delCol) {
-                    temp[i][j++] = mat[row][col];
+                    temp[i][j++] = matrix[row][col];
                     if (j == getSize().second - 1) {
                         j = 0;
                         ++i;
@@ -151,7 +151,7 @@ public:
     }
 
     int64_t getDeterminant() const {
-        assert(isSquare());
+        assert(isSquareMatrix());
         
         int64_t det = 0;
         if (getSize().first == 1) {
