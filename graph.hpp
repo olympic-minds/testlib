@@ -120,26 +120,7 @@ public:
 
     bool isConnected() { return undirectedConnectedComponentsNumber() == 1; }
 
-    uint64_t undirectedConnectedComponentsNumber() {
-        uint64_t scc_number = 0;
-        bool visited[getNumberOfNodes() ];
-
-        std::function<void(uint64_t)> dfs = [&](uint64_t v) -> void {
-            visited[v] = true;
-            for (auto u : graph[v]) {
-                dfs(u);
-            }
-        };
-
-        for (uint64_t v = 0; v < getNumberOfNodes() ; v++) {
-            if (!visited[v]) {
-                visited[v] = true;
-                scc_number++;
-                dfs(v);
-            }
-        }
-        return scc_number;
-    }
+    uint64_t undirectedConnectedComponentsNumber();
 };
 
 #endif

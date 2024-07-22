@@ -1,12 +1,8 @@
-#ifndef READWRITER_H_
-#define READWRITER_H_
-
-#include "testlib.hpp"
-#include "utils.hpp"
 #include "graph.hpp"
+#include "testlib.hpp"
 #include <queue>
 
-Graph &Graph::relabelNodes() {
+Graph& Graph::relabelNodes() {
     auto perm = rnd.perm(getNumberOfNodes() );
     std::vector<uint64_t>inv_perm(getNumberOfNodes() );
     for (uint64_t i = 0; i < getNumberOfNodes() ; i++) {
@@ -21,6 +17,28 @@ Graph &Graph::relabelNodes() {
     }
     return *this;
 }
+
+uint64_t Graph::undirectedConnectedComponentsNumber() {
+    uint64_t scc_number = 0;
+    bool visited[getNumberOfNodes() ];
+
+    std::function<void(uint64_t)> dfs = [&](uint64_t v) -> void {
+        visited[v] = true;
+        for (auto u : graph[v]) {
+            dfs(u);
+        }
+    };
+
+    for (uint64_t v = 0; v < getNumberOfNodes() ; v++) {
+        if (!visited[v]) {
+            visited[v] = true;
+            scc_number++;
+            dfs(v);
+        }
+    }
+    return scc_number;
+}
+
 
 Graph Graph::constructEmptyGraph(uint64_t nodes) {
     std::vector<std::vector<uint64_t>> g;
@@ -269,27 +287,3 @@ Graph Graph::constructDenseGraph(uint64_t nodes) {
 // Bi-clique
 // Krata (n x m)
 // Grid (n x m)
-
-/**
- * @brief Returns 2 streams: for prompt input files and for solution input files.
- *
- * @note The caller is responsible for closing the file streams using its close() method.
- */
-std::pair<std::ofstream, std::ofstream> setupTest(uint64_t testNumber) {
-    std::string promptInPath = format("%s/%lu.in", dirs.at("promptInputDirectory").c_str(), testNumber);
-    std::string solutionInPath = format("%s/%lu.in", dirs.at("solutionInputDirectory").c_str(), testNumber);
-
-    std::ofstream promptInFile(promptInPath);
-    if (!promptInFile) {
-        std::cerr << "Error: Could not open the file " << promptInPath << std::endl;
-        exit(1);
-    }
-    std::ofstream solutionInFile(solutionInPath);
-    if (!solutionInFile) {
-        std::cerr << "Error: Could not open the file " << solutionInPath << std::endl;
-        exit(1);
-    }
-    return {std::move(promptInFile), std::move(solutionInFile)};
-}
-
-#endif
