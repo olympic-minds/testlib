@@ -1,7 +1,7 @@
 #ifndef GRAPH_H_
 #define GRAPH_H_
 
-#include "utils.h"
+#include "utils.hpp"
 #include <numeric>
 #include <functional>
 

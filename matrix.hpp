@@ -1,7 +1,7 @@
 #ifndef MATRIX_H_
 #define MATRIX_H_
 
-#include "utils.h"
+#include "utils.hpp"
 
 template <ConvertibleToInt64_t T>
 class Matrix {

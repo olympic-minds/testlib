@@ -1,9 +1,9 @@
 #ifndef READWRITER_H_
 #define READWRITER_H_
 
-#include "testlib.h"
-#include "utils.h"
-#include "graph.h"
+#include "testlib.hpp"
+#include "utils.hpp"
+#include "graph.hpp"
 #include <queue>
 
 Graph &Graph::relabelNodes() {
