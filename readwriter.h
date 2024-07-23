@@ -147,10 +147,10 @@ Graph Graph::construct_forest_graph(int nodes, int numberOfTrees) {
 
 Graph Graph::construct_tree_graph(int nodes) { return construct_forest_graph(nodes, 1); }
 
-Graph Graph::construct_simpler_jellyfish_graph(int nodes, int cycleSize, int maxTentacleLength, int numberOfTentacles) {
+Graph Graph::construct_simpler_jellyfish_graph(int nodes, int cycleSize, int minTentacleLength, int numberOfTentacles) {
     std::vector<std::vector<int>> g;
     g.resize(nodes);
-    std::vector<int> pa = rnd.partition(nodes - cycleSize, numberOfTentacles, maxTentacleLength);
+    std::vector<int> pa = rnd.partition(numberOfTentacles, nodes - cycleSize, minTentacleLength);
     int next = 1;
     int prev = 0;
     for (int i = 0; i < cycleSize - 1; i++) {
@@ -173,8 +173,8 @@ Graph Graph::construct_simpler_jellyfish_graph(int nodes, int cycleSize, int max
     return Graph(g).relabelNodes();
 }
 
-Graph Graph::construct_starfish_graph(int nodes, int maxRayLength, int numberOfRays) {
-    return construct_simpler_jellyfish_graph(nodes, 1, maxRayLength, numberOfRays);
+Graph Graph::construct_starfish_graph(int nodes, int minRayLength, int numberOfRays) {
+    return construct_simpler_jellyfish_graph(nodes, 1, minRayLength, numberOfRays);
 }
 
 /* Silkworm of size n is a path of size (n+1)/2 and one private node for each node from path */
